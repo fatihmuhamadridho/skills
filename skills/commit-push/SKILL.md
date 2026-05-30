@@ -16,11 +16,14 @@ This skill only covers commit and push. It does not stage files automatically an
 3. Verify there are staged changes.
 4. Review only the staged diff to infer the commit intent.
 5. Write a commit message in the required subject-and-body format.
-6. Verify the final commit command will include both the subject and the description body before running it.
-7. Create the commit.
-8. If the created commit ended up without a body for any reason, stop and fix the commit message before pushing.
-9. Push the active branch to its remote.
-10. If the branch has no upstream, push with upstream tracking.
+6. Check whether `git-cz` is available in the current environment.
+7. If `git-cz` is available, use it first and prefer its non-interactive mode so both the subject and description body are passed explicitly.
+8. If `git-cz` is not available, fall back to a normal `git commit` form that still passes both the subject and the description body explicitly.
+9. Verify the final commit command will include both the subject and the description body before running it.
+10. Create the commit.
+11. If the created commit ended up without a body for any reason, stop and fix the commit message before pushing.
+12. Push the active branch to its remote.
+13. If the branch has no upstream, push with upstream tracking.
 
 Stop and tell the user if there are no staged changes. Do not run `git add`, `git add -u`, or `git add -A` as part of this skill unless the user explicitly asks for staging help in a separate instruction.
 
@@ -61,7 +64,13 @@ Rules:
 - Do not leave the description blank even for small commits.
 - Do not use a one-line `git commit -m "type: summary"` command for this skill unless another `-m` body argument is also present.
 - Prefer commit creation forms that make the body explicit, such as multiple `-m` flags or a prepared commit message file.
+- Prefer `git-cz` over plain `git commit` when `git-cz` is installed and callable.
+- When using `git-cz`, prefer the documented non-interactive flags so the commit can be created with an explicit `--type`, `--subject`, and `--body`.
+- Only fall back to plain `git commit` when `git-cz` is unavailable in the current environment.
 - Before pushing, verify the latest commit message still contains a non-empty body, not just the subject.
+
+Reference documentation for `git-cz`:
+- https://github.com/streamich/git-cz
 
 ## Allowed Types
 
@@ -129,11 +138,22 @@ Before committing, verify:
 - There are staged changes
 - The staged diff is coherent enough to summarize in one commit
 - The staged diff is coherent enough to justify one subject and one description body
+- Whether `git-cz` is available before choosing the commit command
 
 Before pushing, verify:
 - the latest commit exists
 - the latest commit message contains both the subject and a non-empty description body
 - the body still matches the staged diff that was committed
+
+## Command Preference
+
+Preferred commit flow:
+
+1. Detect `git-cz`.
+2. If available, use `git-cz --non-interactive` with explicit `--type`, `--subject`, and `--body`.
+3. If unavailable, use `git commit` with explicit subject and body, such as separate `-m` values.
+
+Do not use interactive `git-cz` prompts unless the user explicitly wants an interactive commit flow.
 
 If the staged changes appear too broad for one commit, warn the user before committing.
 
