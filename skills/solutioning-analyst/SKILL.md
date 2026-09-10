@@ -1,220 +1,156 @@
 ---
 name: solutioning-analyst
-description: Use for turning a Figma link, screenshot, or UI image into backend-oriented solutioning, API flow, and technical scope.
+description: Analyze backend solutions and produce System Analyst deliverables, especially IFA/API contracts in the configured template format, from requirements, Figma, screenshots, existing documents, or feature descriptions.
 ---
 
 # Solutioning Analyst
 
-Use this skill to turn UI evidence into a technical solutioning draft for one feature at a time.
+Turn business or UI evidence into objective, definitive, implementation-ready
+technical solutioning. Apply System Analyst Playbook v1.6. Use configured IFA format
+for API-focused output.
 
-This is the default solutioning skill and should stay reusable across repositories, including Patricia.
+## Required references
 
-Prefer this skill for requests such as:
+Read before producing deliverables:
 
-- "buat solutioning"
-- "analyze figma jadi backend spec"
-- "tentuin fitur dari figma"
-- "buat API contract dari screen ini"
-- "buat objective overview sampai status code"
+1. [Playbook compliance](references/playbook-compliance.md) for Playbook requirements.
+2. [IFA template v4](references/ifa-template-v4.md) for every API contract or IFA.
+3. [Feature inference rules](references/feature-inference-rules.md) only when scope is unclear.
 
-Do not use this skill for pure product discovery, UI copy review, or broad multi-feature BRDs where no single feature can be scoped safely.
+Use [API contract shape](references/api-contract-shape.md) only as supplementary
+guidance. IFA template wins on conflict.
 
-## Inputs
+## Sources and baseline
 
-Accept any of these as the primary source:
+Accept requirements, BRS/FRS/SRS, Figma, screenshots, diagrams, existing LLD/IFA,
+meeting conclusions, and user constraints.
 
-- Figma link
-- image attachment
-- local image file exported from Figma
+Before writing:
 
-Optional supporting context:
+1. Identify one feature, API purpose, service/domain, actor, consumer, and scope.
+2. Find latest relevant solutioning or interface baseline.
+3. Carry forward still-valid content.
+4. Classify each impact as New, Enhancement, or Existing.
+5. Separate sourced facts from assumptions.
+6. Resolve conflict by user instruction, newest approved source, then newest baseline.
 
-- feature hints from the user
-- actor or role names
-- domain vocabulary
-- business constraints that are already known
-- preferred output language: `id` or `en`
+Never expose production secrets, credentials, tokens, keys, private endpoints, or
+real customer PII. Use placeholders and synthetic examples.
+
+## Output decision
+
+- API/interface request: produce IFA in exact order and shape from IFA template v4.
+- Broader solution request: produce LLD coverage from Playbook compliance; keep
+  detailed request/response/status specifications in an IFA or link.
+- Major legacy-to-modern transformation: include migration strategy.
+- Formal Word/PDF: include required administrative sections.
+- Informal Markdown: approvals, revisions, and contents may be omitted.
+
+Default language is Bahasa Indonesia. Keep identifiers, JSON fields, paths,
+protocols, diagram syntax, and status codes unchanged. Request Validation must use
+Bahasa Indonesia unless user explicitly requests another language.
 
 ## Workflow
 
-1. Inspect the Figma link or image and infer the likely feature scope.
-2. If multiple screens or flows appear, choose one primary feature only.
-3. State the chosen feature name early and make the scoping assumption explicit.
-4. Check whether an existing relevant solutioning already exists and use it as baseline when still relevant.
-5. If relevant existing solutioning exists, duplicate or carry forward the still-relevant baseline before analyzing new changes.
-6. Derive the actor, business objective, core state changes, backend entities, and persistence needs.
-7. Identify synchronous flow, asynchronous side effects, validations, and negative cases.
-8. Classify each changed area as already covered, enhancement on existing flow or API, or new API contract.
-9. Produce the final document in Markdown with Mermaid diagrams.
-10. Save one file per feature at `docs/solutioning/<feature-slug>/<yyyy-mm-dd>-<feature-slug>.md` unless the user asks for another location.
+1. Grasp context, current state, target state, constraints, and evidence.
+2. Analyze gaps, impacted systems, interfaces, data, security, lifecycle, and testing.
+3. Design alternatives when meaningful tradeoffs exist.
+4. Conclude design using evidence.
+5. Document final state declaratively and concisely.
+6. Verify consistency across diagrams, tables, examples, and codes.
 
-## Baseline-First Rules
+Cover rare cases when security, money, data integrity, or irreversible state is at risk.
 
-- Always check whether an existing relevant solutioning already exists before writing a new contract.
-- If relevant existing solutioning exists in earlier sprints or older docs, treat it as the baseline that must be carried forward when still relevant.
-- Do not jump straight into writing a greenfield API contract if an existing solutioning already covers the flow.
-- Compare the design or change source against the duplicated baseline, not against the screen alone.
-- If the same capability appears in both a historical solutioning doc and a raw supporting artifact, use the historical solutioning as the baseline source and use the raw artifact as supplementary evidence.
-- If multiple prior solutioning docs exist, prefer the most recent still-relevant one, but keep older coverage that was not superseded.
-- If a previous solutioning is only partially relevant, carry forward the relevant baseline first, then adapt only the necessary parts.
+## Diagram rules
 
-## Review Discipline
+- Sequence diagrams show actors, internal/external participants, calls, returns,
+  conditions, loops, async interactions, and useful request/response notes.
+- Distinguish new and enhanced flow where relevant.
+- Keep notes short; split large flows into named child diagrams.
+- State diagrams are mandatory for transactional-module enhancements.
+- State names use completed or stative forms: SUBMITTED, APPROVED, REJECTED.
+- Do not use imperative state names such as SUBMIT, APPROVE, or REJECT.
+- Prefer readable Mermaid flowcharts when clearer than stateDiagram.
 
-Before finishing, do both checks:
+## API rules
 
-1. Post-duplication review
-- confirm which previous solutioning files were considered
-- confirm which baseline parts were carried forward
-- confirm whether any earlier files were intentionally excluded
+- Internal IFA may cover all interfaces in one service.
+- External-party IFA covers one purpose/use case for one consumer or partner.
+- Preserve this exact top-level order from IFA template v4:
+  Design, Sequence Diagram, Performance / SLA Targets, General Information,
+  Business Rules, Request Headers, Request Parameters, Request Body, Response Body,
+  HTTP Status Codes, and Service Status Codes.
+- Each API includes general information, endpoint composition, applicable headers,
+  parameters/body, validation, response, HTTP statuses, service codes, versioning,
+  exposure classification, and testing scope.
+- Every IFA includes Performance / SLA Targets directly after Sequence Diagram.
+  Use columns Success Rate, VUser, CPU / Memory, and Response Time.
+- Derive SLA values from approved requirements, expected traffic, existing correlated
+  API usage, or NFT results. Never present invented values as agreed targets. When
+  evidence is unavailable, use explicit TBD values and list required confirmation.
+- Apply Playbook baselines only as a stated proposal: 99% non-critical, 99.9%
+  critical, and 99.99% highly critical. Response-time baseline depends on service
+  type; VUser and CPU/memory targets require workload evidence.
+- Request fields use M, O, or C. Preserve hierarchy. Define type, maximum length,
+  description, and synthetic example.
+- Every success and error uses this envelope:
 
-2. Post-analysis review
-- confirm every changed area has been evaluated against the baseline
-- confirm each affected area is classified as covered, enhancement, or new contract
-- confirm the final document reflects both inherited baseline and new changes
+    {
+      "status": {
+        "code": "ORDS00000",
+        "message": "Order created successfully"
+      },
+      "data": {}
+    }
 
-## Thread Continuity
+- Response table uses status, status.code, status.message, data, and dotted nested
+  fields such as data.orderId.
+- Default HTTP mapping: 200 positive, 400 business/validation, 500 technical.
+- Service code format: Service Prefix + Status Type + Category + Specific Error Code.
+- Prefix normally has three uppercase letters. Status type is S, B, or T.
+- Category has two digits; 00 is default. Common categories:
 
-- For recurring solutioning work, especially feature-by-feature patrol or automation work, continue in one ongoing conversation thread when possible.
-- Do not intentionally start a fresh chat only because one feature cycle is complete.
-- If the platform creates a fresh thread automatically, use automation memory or a concise recap so the next cycle rebuilds continuity quickly.
+| Category | Business | Technical |
+| --- | --- | --- |
+| 00 | General/default | Generic exception |
+| 01 | Authentication | Data unmarshalling |
+| 02 | User validation | External service |
+| 03 | Request payment | Database |
+| 04 | Request fulfilment | Object storage |
 
-## Language Mode
+- Specific error code has three digits. Use 000 when no granular distinction is
+  needed; otherwise allocate consistently within service/domain.
+- Sequence outcomes, examples, HTTP statuses, and service-code tables must agree.
 
-- Default to the user's preferred language if it is explicit.
-- If the user does not specify, use Bahasa Indonesia.
-- If the user asks for English, keep the entire document in English, including section prose, bullet text, and table descriptions.
-- Keep code blocks, Mermaid syntax, endpoint paths, and status codes unchanged across languages.
+## Versioning, exposure, and testing
 
-## Scope Rules
+- Enhance existing API: optional change without consumer impact; preserve path/version.
+- New major version: breaking request/response change; keep older version supported.
+- New endpoint: materially different business flow; start at v1.
 
-- Default to `one feature doc` per request.
-- If the source is ambiguous, list 2-3 candidate feature names internally, then lock one as the primary scope in the output.
-- Prefer the feature that best explains the main call to action, main data form, or main workflow transition shown on the screen.
-- If the UI contains list, detail, create, edit, and history views of the same domain, treat them as one feature only when they are clearly one lifecycle.
-- If the material still does not support a confident backend design, produce a conservative draft and add a short `Assumptions` section after the 8 required sections.
+Classify API as Public, Enterprise Intranet, or Internal Only.
 
-Use [references/feature-inference-rules.md](references/feature-inference-rules.md) when the feature boundary is unclear.
+- NFT: customer-facing, high-load/spike-prone, new API, or legacy enhancement
+  affecting core logic.
+- VA/Pentest: new Public or Enterprise Intranet API, or security-impacting enhancement.
+- Internal-only API is excluded from Pentest.
+- NFT handoff includes service/module, endpoint, sample parameter, sample response,
+  target CPU/memory, and target TPS.
+- VA/Pentest handoff includes service/module, endpoint, sample parameter, and response.
 
-## Output Contract
+## Delivery
 
-Always generate these 8 sections in this order:
+Default one Markdown file per feature:
+docs/solutioning/<feature-slug>/<yyyy-mm-dd>-<feature-slug>.md
 
-1. `Objective Overview`
-2. `Ringkasan Alur & Cara Kerja Sistem`
-3. `Business Rules`
-4. `Table Design`
-5. `Sequence Diagram`
-6. `State Diagram`
-7. `API Contract`
-8. `Table Status Code`
+Update existing document when requested; do not create a replacement.
 
-Rules for each output:
+## Validation
 
-- Write the document in Markdown.
-- Write `Sequence Diagram` and `State Diagram` as fenced `mermaid` blocks.
-- Keep the document backend-oriented, not a product brief.
-- Normalize the final output into this 8-section format even when your intermediate thinking used a duplication or review checklist.
-- Reflect the style of the provided examples by covering lifecycle, validation, cascade effects, async work, and contract-level detail when relevant.
-- Do not copy wording from example documents.
-- In `Sequence Diagram`, prefer response labels that directly reference internal status codes from `Table Status Code` when the flow is showing an API outcome.
-- Avoid vague sequence labels such as `Response success`, `Response detail`, or `Submit success` when a concrete status code like `LATEST_APK`, `APPLICATION_UPLOADED`, `FORBIDDEN`, or `VALIDATION_ERROR` is available.
-- When the solutioning describes whether a capability is an enhancement of an existing flow or a brand-new addition, label the relevant subsection headings with a prefix:
-  - use ` [Enchancement] ` for changes that extend or adjust an existing endpoint, existing flow, existing table usage, or existing screen behavior
-  - use ` [New] ` for genuinely new endpoints, flows, entities, or sections that are introduced from scratch
-  - apply this especially to API contract subsection titles and other feature-level subsections where the distinction matters
-  - do not add the prefix blindly to every top-level mandatory section unless the user explicitly wants that broader formatting
-- When examples of params, payloads, or responses contain newly introduced fields, annotate those fields inline with ` // new ` in the JSON example.
-- When a params block, payload block, or response block contains only existing fields, do not force ` // existing ` comments inline unless the user explicitly asks for them.
-- For `State Diagram`, prefer a business-state card style:
-  - each node should represent a meaningful lifecycle state of the domain entity, not a temporary UI or transport state
-  - each node should include the state name plus 1-3 short lines that explain business meaning, data condition, inventory/lock effect, or downstream effect when relevant
-  - transitions should be labeled with business events such as submit, approve, reject, save draft, activate, finish, or resubmit
-  - avoid generic technical states like `SAVING`, `LOADING`, or `UPLOADING` unless the feature itself is fundamentally an async job lifecycle
-  - when the source image suggests a richer workflow map, mirror that richness rather than collapsing it into a minimal enum-only diagram
-  - when the desired output is visually closer to a workflow board or status-map, prefer Mermaid `flowchart TB` or `flowchart LR` instead of `stateDiagram-v2` so the layout can stay directional and avoid circular auto-routing
-  - use `stateDiagram-v2` only when the lifecycle is simple and the rendered layout will remain readable
-  - if Mermaid still routes edges in a circular way, force the layout with `subgraph` rows or columns so states stay in deliberate lanes similar to the reference image
-  - prefer one-way reading lanes first; only add return arrows when the business flow truly needs them
-  - when the user wants rigid lines, add Mermaid init config for flowchart curves such as `%%{init: {'flowchart': {'curve': 'stepBefore'}}}%%`
-  - prefer the main reading direction `LR` first, then use `TB` only inside lanes or subgraphs when the user explicitly wants left-to-right then downward flow
-  - if horizontal lanes still create crossing arrows, switch the outer layout to `flowchart TB` and arrange states into 2-3 `LR` rows so the reader scans left-to-right within each row, then top-to-bottom across rows
-  - keep the happy path grouped in one directional band and place rejection or failure states on a separate row or side to reduce edge collisions
-  - reduce the number of return arrows; if two recovery transitions point back into the same working state, prefer the closest target and avoid decorative loops
+Confirm IFA template compliance, baseline use, facts versus assumptions, all relevant
+Playbook points, Indonesian request validation, nested status envelope in every
+response, no secrets/PII, and cross-section consistency. Remove placeholders unless
+source information is unavailable and the placeholder is explicit.
 
-Use [references/output-template.md](references/output-template.md) as the shape of the final document.
-
-## API and Data Modeling Rules
-
-- `Table Design` must describe real domain tables or aggregates, not placeholder generic tables.
-- For each table, include purpose and key fields with type, constraint, and notes.
-- `Table Design` should also include an `Origin` column whenever the feature mixes existing and new fields, using values `Existing` or `New`.
-- `API Contract` must cover the main endpoints needed by the feature, not every imaginable endpoint.
-- Each endpoint should include method, path, headers, params and/or payload shape when relevant, success response, negative cases, and at least one concrete example response for each important negative case.
-- If an endpoint in the document reuses an existing route, keep the existing route text unchanged and mark the endpoint subsection with ` [Enchancement] ` when the payload, validation, response, or behavior is being extended.
-- If an endpoint is newly introduced, mark that endpoint subsection with ` [New] `.
-- For each API subsection, provide typed schema tables when relevant:
-  - `Headers` for request headers
-  - `Params` for params, query context, tab context, or route context that materially affects the response
-  - `Payload` for request bodies or multipart fields
-  - `Response Data Type` for the main response `data` shape
-- Prefer `Headers`, `Params`, and `Payload` labels directly in the API subsection instead of separate prose bullets like `Auth:` or `Validation:`.
-- If a header/param/payload table is present, it should be the primary place for that contract detail instead of duplicating the same detail in nearby prose.
-- These schema tables should include at least:
-  - for `Headers`: `Header`, `Value`, `Origin`, `Notes`
-  - for `Params`, `Payload`, and `Response Data Type`: `Field`, `Type`, `Origin`, `Notes`
-- Use `Origin` values `Existing` or `New`.
-- If the request shape truly has no params, no payload, or no special headers beyond what the user cares about, omit that specific table instead of inventing empty sections.
-- Write negative cases in a compact format:
-  - `404` Showtime not found
-    - `Example response:`
-    - JSON response example
-- Always include list and detail endpoints when the screen clearly represents a CRUD master-data flow with a detail or modal view.
-- Use these default endpoint patterns unless the user or screen evidence says otherwise:
-  - list: `GET /<feature>/v1/list`
-  - detail: `GET /<feature>/v1/detail/{id}`
-  - create: `POST /<feature>/v1/submit`
-  - update: `PUT /<feature>/v1/update/{id}`
-  - delete: `DELETE /<feature>/v1/delete/{id}`
-- `Table Status Code` must stay consistent with the API contract.
-- `Table Status Code` should include an `Origin` column when the document mixes reused and newly introduced status codes.
-- `Sequence Diagram` and `Table Status Code` should agree on named outcomes. If the sequence shows an API result, use the same internal status code label that appears in `Table Status Code`.
-- When the UI implies status transitions, include a state model even if the exact enum names are inferred conservatively.
-- Favor durable lifecycle states over ephemeral interaction states. If a file upload or save action only supports a larger domain lifecycle, model the persisted business outcome instead of the front-end request phase.
-- If the feature has a dense approval or release flow, optimize the state section for readability of the path first, even if that means using a Mermaid flowchart with state-like cards rather than a literal state-machine syntax.
-- When choosing between semantic completeness and readability, prefer the clearer diagram. Omit low-value alternate arrows if they make the path harder to follow.
-
-Use [references/api-contract-shape.md](references/api-contract-shape.md) for the minimum API contract depth and response structure.
-
-## Recommended Execution Pattern
-
-When the request is substantial, use `solutioning_analyst` to produce the backend analysis and then normalize the final write-up into the required 8-section format.
-
-When using `solutioning_analyst`, keep the delegated goal specific:
-
-- identify the feature and actor
-- derive business rules and persistence model
-- define state transitions and async side effects
-- produce API contract and error/status table
-
-Then consolidate the result into one final Markdown document.
-
-## Validation Checklist
-
-Before stopping, verify that:
-
-- the chosen feature name is explicit
-- relevant prior solutioning baseline was checked before introducing new contracts
-- exactly the 8 required sections exist and are ordered correctly
-- both diagrams are valid Mermaid blocks
-- the state diagram uses business lifecycle states, not page or request phases, unless the feature genuinely is a processing pipeline
-- the chosen Mermaid syntax keeps the layout readable and does not create unnecessary circular routing when a directed workflow card layout is more appropriate
-- the state diagram separates major outcomes like success and rejection enough that arrow direction remains easy to follow
-- `Table Design` includes the core entities implied by the UI
-- `API Contract` includes at least one positive path and relevant negative paths
-- relevant API subsections include `Params Data Type`, `Payload Data Type`, and/or `Response Data Type` where they add clarity
-- relevant API subsections use `Headers`, `Params`, `Payload`, and/or `Response Data Type` where they add clarity
-- schema tables that mix old and new fields include an `Origin` column with `Existing` or `New`
-- JSON examples mark newly introduced params, payload fields, or response fields with `// new` when applicable
-- sequence diagram API outcomes reuse internal status code names from `Table Status Code` where applicable
-- `Table Status Code` aligns with the API contract
-- any uncertainty is captured briefly in `Assumptions` after the mandatory sections
+Also confirm Performance / SLA Targets exists immediately after Sequence Diagram and
+contains all four required columns with sourced values or explicit TBD markers.

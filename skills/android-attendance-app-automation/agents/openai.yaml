@@ -1,0 +1,4 @@
+interface:
+  display_name: "Android Attendance App Automation"
+  short_description: "Automate attendance clock-in and clock-out"
+  default_prompt: "Use $android-attendance-app-automation to automate an attendance flow on the connected Android device."

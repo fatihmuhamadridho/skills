@@ -7,9 +7,9 @@ Do not assume a generic assessment template if the spreadsheet already has an es
 - the target tab
 - at least one nearby finished tab used by the same team
 
-## Simplified Patricia Template
+## Simplified Four-Column Template
 
-When the target sheet matches the simplified Patricia template, write the output in these columns only:
+When the target sheet matches the simplified four-column template, write the output in these columns only:
 
 - `Task`
 - `Mandays`
@@ -49,7 +49,7 @@ Do not write plain values into unformatted rows and assume the sheet will look c
 
 ## Example
 
-Simplified Patricia-style output should look like this structurally:
+Simplified output should look like this structurally:
 
 | Task | Mandays | Story | Notes |
 | --- | --- | --- | --- |

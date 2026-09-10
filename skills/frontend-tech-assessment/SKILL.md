@@ -14,7 +14,7 @@ This skill is for turning product and technical inputs into grouped frontend tas
 
 It is not for implementing the UI or writing code.
 
-The default assessment template for this skill is the simplified Patricia format with only 4 input columns:
+The default assessment template is a simplified format with only 4 input columns:
 
 - `Task`
 - `Mandays`
@@ -92,7 +92,7 @@ Read [references/source-priority.md](references/source-priority.md) when sources
 12. In `Spreadsheet mode`, write new tasks only below that true last used row unless the user explicitly asked to overwrite an existing block.
 13. In `Spreadsheet mode`, for Google Sheets, copy the format from a valid reference row or block into the destination rows first, then write cell values into that already-formatted range. Do not write value-only rows into fresh blank rows when the sheet relies on borders or wrap styling.
 14. In `Spreadsheet mode`, after writing, re-read the rows immediately above and below the inserted block to confirm nothing existing was overwritten and the new block kept the same borders and visual treatment.
-15. In `Spreadsheet mode`, when the target is the simplified Patricia template, write only into `Task`, `Mandays`, `Story`, and `Notes` by following [references/output-shape.md](references/output-shape.md).
+15. In `Spreadsheet mode`, when the target uses the simplified 4-column template, write only into `Task`, `Mandays`, `Story`, and `Notes` by following [references/output-shape.md](references/output-shape.md).
 16. In `Markdown mode`, render the same grouped FE breakdown into a Markdown document with a clear title, short source/context note, and one row per task in either a Markdown table or concise task list.
 17. In `Markdown mode`, keep the same logical fields as the spreadsheet output:
    - `Task`
@@ -107,7 +107,7 @@ Read [references/source-priority.md](references/source-priority.md) when sources
 - If the user asks for `.md`, `markdown`, or a document output, produce a Markdown file instead of a sheet update.
 - If no spreadsheet target is provided, produce a Markdown table or list that mirrors the same grouped structure.
 - The output must follow the live target sheet shape, not a fallback template from another workbook.
-- When the target resembles the simplified Patricia template, use only these columns:
+- When the target resembles the simplified 4-column template, use only these columns:
   - `Task`
   - `Mandays`
   - `Story`
