@@ -20,3 +20,5 @@
 # Do not push bundled system skills.
 /skills/.system/
 /skills/.system/**
+
+!/.vscode

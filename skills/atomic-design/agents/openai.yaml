@@ -1,4 +1,4 @@
 interface:
   display_name: "Atomic Design"
-  short_description: "Refactor and review UI with atomic design."
-  default_prompt: "Use $atomic-design to reorganize this UI into clearer atom, molecule, organism, template, and page boundaries."
+  short_description: "Reusable UI layers and composition rules"
+  default_prompt: "Use $atomic-design to place UI in the right atomic layer and keep pages routing-only."

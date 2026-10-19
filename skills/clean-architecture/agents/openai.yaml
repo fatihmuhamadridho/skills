@@ -2,3 +2,6 @@ interface:
   display_name: "Clean Architecture"
   short_description: "Review and refactor boundaries with clean architecture."
   default_prompt: "Use $clean-architecture to review this codebase and identify cleaner domain, application, adapter, and infrastructure boundaries."
+
+policy:
+  allow_implicit_invocation: true

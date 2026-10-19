@@ -1,67 +1,60 @@
 ---
 name: repo-conventions
-description: Use for repo-wide coding conventions, structure alignment, naming consistency, and completion checks.
+description: Use when applying Patricia Dashboard coding conventions, completion checks, and repo-wide anti-pattern rules that are not specific to one architecture skill.
 ---
 
 # Repo Conventions
 
-Use this skill when the task needs repo-wide rules, coding conventions, or completion checks that are not owned by a more specific skill.
+Use this skill when checking whether a change follows this repo's coding standards and done criteria.
 
-This skill is the general rulebook. It does not replace `$feature-driven-development`, `$atomic-design`, `$clean-architecture`, or `$commit-push`. It complements them.
+## Coding rules
 
-Read [references/repo-rules.md](references/repo-rules.md) for the repo-wide implementation rules.
+- Use TypeScript strict mode assumptions.
+- Avoid `any`.
+- Use clear, descriptive naming.
+- Avoid uncommon abbreviations.
+- Use `kebab-case` for files.
+- Use `PascalCase` for components.
+- Use `camelCase` for functions and variables.
+- Keep one function focused on one responsibility.
+- Avoid deeply nested logic when a simpler structure is available.
+- Follow existing patterns before introducing a new variation.
 
-Read [references/done-checklist.md](references/done-checklist.md) before considering work complete.
+## Done criteria
 
-Read [references/anti-patterns.md](references/anti-patterns.md) when a change feels inconsistent with the repo.
+- The change follows the existing feature structure.
+- Relevant tests are added or updated only when the user explicitly asks for testing work or invokes `$tdd`.
+- `npm run lint` should pass.
+- `npm run test` should pass for the touched area only when testing is explicitly in scope.
+- `npm run typecheck` should pass when the change touches shared typing or cross-layer interfaces.
+- When adding a new page route, treat route integration as incomplete until `src/middleware.ts` and `src/commons/configs/permission.ts` are checked.
+- When adding a new page route, verify whether `ROUTE_PERMISSIONS` needs a new entry, whether an existing permission can be reused, and whether `PERMISSION_LIST` needs a new permission slug.
+- Do not mark a new route as complete unless it is reachable after login through the repo's actual middleware and permission flow.
+- When adding or changing UI, verify that existing shared components were searched and reused before introducing new JSX structure.
+- When adding a new page route that should appear in navigation, also check the sidebar or menu data source instead of stopping at the page export.
+- Distinguish between repo-controlled navigation and backend-controlled navigation. State clearly which one is the source of truth before claiming the page is fully reachable from the menu.
+- If a UI request comes with strong visual evidence such as Figma screenshots or frame exports, do not change the screen type during implementation just because a nearby existing page is easier to reuse.
+- For substantive feature screens, keep `presentation/pages/*` orchestration-only and move screen composition into a `presentation/templates/*` component.
 
-## Core Workflow
+## Anti-patterns
 
-1. Identify whether the task needs repo-wide guidance rather than a narrower architecture skill.
-2. Inspect the nearest existing pattern before introducing anything new.
-3. Keep the implementation as small and local as the task allows.
-4. Apply the repo's naming, structure, and composition habits consistently.
-5. Use the more specific local skill if the main question becomes about feature slicing, component layering, dependency direction, or Git workflow.
-6. Run the completion checklist before treating the task as done.
+- Business logic in reusable UI.
+- New folders without a clear reason.
+- Adding or changing unit tests without the user explicitly putting testing in scope.
+- Violating architecture boundaries without justification.
+- Adding a page route without checking `src/middleware.ts`, `ROUTE_PERMISSIONS`, or the underlying permission slug coverage.
+- Claiming a new page is done when the route exists in `src/pages/*` but the middleware or permission map still blocks it.
+- Treating a backend-driven sidebar as if it were fully controllable from the frontend repo.
+- Reusing shared UI in a way that changes the intended surface type from the design, such as turning a list-management page into a dashboard.
+- Writing raw UI with native `div`, `button`, `input`, `select`, `table`, `img`, or similar tags when an existing repo component can express the same behavior or structure.
+- Treating native HTML as the default path for Figma or UI implementation instead of reusing or extracting repo components first.
+- Rendering an entire feature screen directly inside `presentation/pages/*` when the page should delegate to a template.
 
-## Default Rules
+## Decision guide
 
-- Follow existing patterns before creating a new variation.
-- Prefer the repo's current conventions over personal preference.
-- Keep changes scoped to the task instead of opportunistically reshaping unrelated areas.
-- Reuse existing abstractions when they fit.
-- If an abstraction does not fit, extend carefully before creating a competing pattern.
-- Leave the surrounding code more coherent, not more fragmented.
+- If the task is mainly about architecture, UI composition, testing workflow, or feature slicing, use the dedicated skill for that topic alongside this one if needed.
+- If the task only needs repo-wide style and completion rules, this skill is enough on its own.
 
-## Boundaries
+## References
 
-Use this skill for questions like:
-- Is this change aligned with the repo's existing pattern?
-- Is this implementation actually complete?
-- Did this task introduce a repo-wide smell?
-- Is the change too broad for the requested scope?
-
-Do not use this skill as a substitute for:
-- `$feature-driven-development` when the main issue is feature ownership or page boundaries
-- `$atomic-design` when the main issue is UI composition boundaries
-- `$clean-architecture` when the main issue is dependency direction or layer placement
-- `$commit-push` when the main issue is Git workflow
-
-This skill does not define testing workflow. If testing becomes the core concern, switch to `$test-driven-development`.
-
-## Review Checklist
-
-Before finishing, verify:
-- the implementation follows an existing repo pattern where one exists
-- the change scope still matches the user's request
-- new abstractions were added only when justified
-- there are no obvious repo-wide smells left behind
-- the task is actually complete, not just partially wired
-
-## Trigger Examples
-
-Use this skill for prompts like:
-- "Use $repo-conventions to review whether this change fits the repo."
-- "Pastikan hasil kerja ini sudah sesuai convention repo."
-- "Cek apakah implementasi ini sudah benar-benar selesai."
-- "Jangan bikin variasi baru kalau repo sudah punya pola yang dipakai."
+- For repo-specific examples of naming, shared extraction, done criteria, and watch-outs, read `references/repo-examples.md`.

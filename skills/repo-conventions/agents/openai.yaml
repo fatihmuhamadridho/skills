@@ -1,7 +1,7 @@
 interface:
   display_name: "Repo Conventions"
-  short_description: "Apply repo-wide rules and completion checks."
-  default_prompt: "Use $repo-conventions to verify this change follows the repo's existing patterns and is actually done."
+  short_description: "Coding rules and done criteria"
+  default_prompt: "Use $repo-conventions to keep Patricia Dashboard changes aligned with repo-wide coding rules and completion checks."
 
 policy:
   allow_implicit_invocation: true

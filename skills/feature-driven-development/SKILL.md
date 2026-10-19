@@ -1,69 +1,47 @@
 ---
 name: feature-driven-development
-description: Use for organizing or refactoring code with Feature-Driven Development, feature slices, and capability-based boundaries.
+description: Use when organizing work as feature-driven development so each feature stays isolated, end-to-end, and aligned with this repo's feature structure.
 ---
 
-# Feature-Driven Development
+# FDD
 
-Use this skill when the task is about feature slicing, file placement, page ownership, or shared-code boundaries in a Next.js-style repository.
+Use this skill when planning or implementing work as a feature slice in this repo.
 
-Default structure assumed by this skill:
-- `src/features/*`: end-to-end feature slices
-- `src/pages/*`: routing entrypoints only
-- `src/commons/*`: shared non-UI code
-- `src/commons-ui/*`: shared UI primitives and reusable presentation
+## Core rules
 
-Read [references/placement-rules.md](references/placement-rules.md) when you need the decision rules for placement or SSR/ISR ownership.
+- Treat each feature as an end-to-end vertical slice.
+- Keep feature code isolated from other features; do not create direct feature-to-feature dependencies.
+- Use abstractions when features must collaborate.
+- Keep feature structure aligned with:
+  - `domain` for models, types, use cases, repository contracts, controllers
+  - `infrastructure` for repository implementations and API adapters
+  - `presentation` for UI, hooks, page templates, and feature-local UI state
+- Keep `src/pages/*` routing-only; feature SSR/ISR and main data fetching should come from the feature.
+- Put shared logic in `src/commons/*` only when it is generic and reusable.
+- Keep UI primitives in `src/commons-ui/*` and feature-specific UI inside the feature.
+- Keep `presentation/pages/*` orchestration-only. For substantive screens, the page should ideally import one feature `Template` and wire data or handlers into it.
+- Keep major screen anatomy in `presentation/templates/*`, then split sections into `organisms` or `molecules` when the screen becomes large or stateful.
 
-Read [references/examples.md](references/examples.md) when you need concrete examples or anti-pattern comparisons.
+## Planning guidance
 
-## Core Workflow
+- Start from the feature outcome, not from the file tree.
+- Group work by user-visible slice, then decide which layer owns each responsibility.
+- If a change touches more than one feature, extract a shared abstraction instead of coupling features directly.
+- If a page contains feature behavior, move that behavior into the feature before finishing.
+- Keep SSR, ISR, and primary fetch orchestration with the feature instead of re-implementing it in `src/pages/*`.
+- If design evidence shows a new user-facing surface that does not already exist in the repo, create a new feature slice by default instead of attaching it to the closest existing feature.
+- Do not merge a new Figma surface into an existing feature unless the repo already proves that both screens belong to the same feature boundary.
+- If a page file starts rendering most of the screen JSX itself, stop and extract a template before considering the work complete.
 
-1. Identify the user-facing capability being changed.
-2. Choose the owning feature slice.
-3. Keep the change inside that feature unless it is truly reusable across features.
-4. Keep `src/pages/*` limited to routing and page wiring.
-5. Move only domain-neutral shared logic into `src/commons/*`.
-6. Move only reusable UI without business logic into `src/commons-ui/*`.
-7. Reject direct feature-to-feature dependencies.
-8. Prefer the repo's existing pattern before introducing a new variation.
+## Decision guide
 
-## Default Rules
+- If logic is reusable across features and has no feature-specific rules, move it to `src/commons/*`.
+- If logic belongs to one user flow, keep it inside that feature.
+- If logic only routes or composes feature entry points, keep it in `src/pages/*` or feature templates.
+- If a feature page represents a management page, detail page, form flow, or any other substantial screen, create a `Template` and keep the page focused on orchestration.
+- Only skip a dedicated template when the screen is genuinely trivial and there is no meaningful composition to extract.
+- If the request is a new page from design, decide the feature boundary first, then create the route wrapper after the feature target is clear.
 
-- Start local to the owning feature.
-- Promote code to shared only after reuse is real, not hypothetical.
-- `src/pages/*` may compose and wire features, but should not own feature business logic.
-- `src/commons-ui/*` must stay free of business rules and feature-specific state.
-- Shared code must be generic enough that it does not secretly belong to one feature.
+## References
 
-## Boundaries
-
-Use this skill to answer questions like:
-- Should this code stay inside one feature?
-- Is this page doing too much?
-- Does this hook belong in `features` or `commons`?
-- Should this component move to `commons-ui`?
-- Is SSR or ISR logic owned by the page or the feature?
-
-If the main problem is component layering, also use `$atomic-design`.
-
-If the main problem is dependency direction or use-case placement, also use `$clean-architecture`.
-
-If the task becomes test-first design or test placement, switch to `$test-driven-development`.
-
-## Review Checklist
-
-Before finishing, verify:
-- There is one clear owning feature
-- No direct import from one feature into another
-- `src/pages/*` remains routing-only
-- Shared code is actually reusable and domain-neutral
-- `commons-ui` contains presentation, not business logic
-
-## Trigger Examples
-
-Use this skill for prompts like:
-- "Use $feature-driven-development to decide whether this code belongs in feature or commons."
-- "Review boundary halaman ini, terlalu banyak logic di page atau tidak."
-- "Bantu refactor biar sesuai Feature-Driven Development."
-- "Logic SSR ini harus tinggal di page atau di feature?"
+- For repo-specific examples of feature slices, routing-only pages, and shared extraction decisions, read `references/feature-slice-examples.md`.
