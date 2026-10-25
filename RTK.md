@@ -15,7 +15,7 @@ Route the remaining frequent families through RTK too: `rg <pattern>` -> `rtk gr
 Do not emit `rtk proxy powershell -NoProfile -Command "Get-Content ..."` or `rtk proxy powershell -NoProfile -Command "Select-String ..."` for routine code/file inspection. Rewrite them to RTK-native `read` or `grep` forms first.
 Do not force `rtk` onto unsupported shell launchers or built-ins such as `powershell`, `pwsh`, `cmd`, `where`, `echo`, `type`, or `Get-Command`; if RTK has no native wrapper or rewrite path, let the shell handle the command natively instead of creating fallback noise.
 
-Examples:
+## Examples
 
 ```bash
 rtk git status

@@ -29,6 +29,9 @@ These rules apply to Codex and any agent that reads `.codex/AGENTS.md`.
 
 - At the start of every task, check the session skill catalog for a directly relevant skill. Also inspect skill names and descriptions in both the resolved global `<codex-home>/skills` and `<user-home>/.agents/skills` directories, plus project-local `.codex/skills` and `.agents/skills` when present. Use portable path resolution from the Portable Paths rules; do not assume fixed usernames or drive letters.
 - Always use at least one directly relevant skill when one is available, even for a small task. Prefer the best task fit; use `.codex` as the starting preference when candidates are equally specific, but never skip a relevant `.agents` skill because a `.codex` skill exists. Combine skills from both sources when each contributes a distinct, needed workflow. Do not use irrelevant skills just to satisfy a source quota or read every skill body.
+- Do not stop at the first matching skill: map the task's distinct phases and needs, then use every skill whose workflow materially contributes. One skill is sufficient only when it fully covers the task; there is no one-skill limit.
 - Read each selected skill's `SKILL.md` before the work it governs, follow its workflow and required references/tools/checks, and briefly tell the user which skill is being applied when doing so helps orient the work. Recheck skill routing when the task moves into a phase with different needs, such as implementation, debugging, testing, review, or delivery.
 - If no available skill fits, or a needed skill is unavailable or blocked, state that limitation briefly and use the best authorized fallback. Do not claim to have followed a skill that was not read.
 - Before reporting completion, verify applicable skill requirements and checks were followed.
+
+@C:\Users\fatih\.codex\RTK.md
