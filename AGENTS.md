@@ -27,7 +27,8 @@ These rules apply to Codex and any agent that reads `.codex/AGENTS.md`.
 
 ## Skill Routing
 
-- Before substantive work, look for a suitable skill in the session catalog and relevant global or project-local `.codex/skills` and `.agents/skills` directories. Use the skill catalog first, then inspect local skill names and descriptions when needed.
-- Choose a skill based on the task, read its `SKILL.md`, and follow its workflow. Recheck when the task moves into a phase with different needs; combine skills only when they add distinct value.
-- Respect applicable skill requirements for specialized workflows. If no suitable skill is available or it is blocked, state the limitation and use the best authorized fallback; do not claim to have followed a skill that was not read.
-- Do not force a skill onto small or obvious tasks when it adds no value. Before reporting completion, verify applicable skill requirements and checks were followed.
+- At the start of every task, check the session skill catalog for a directly relevant skill. Also inspect skill names and descriptions in both the resolved global `<codex-home>/skills` and `<user-home>/.agents/skills` directories, plus project-local `.codex/skills` and `.agents/skills` when present. Use portable path resolution from the Portable Paths rules; do not assume fixed usernames or drive letters.
+- Always use at least one directly relevant skill when one is available, even for a small task. Prefer the best task fit; use `.codex` as the starting preference when candidates are equally specific, but never skip a relevant `.agents` skill because a `.codex` skill exists. Combine skills from both sources when each contributes a distinct, needed workflow. Do not use irrelevant skills just to satisfy a source quota or read every skill body.
+- Read each selected skill's `SKILL.md` before the work it governs, follow its workflow and required references/tools/checks, and briefly tell the user which skill is being applied when doing so helps orient the work. Recheck skill routing when the task moves into a phase with different needs, such as implementation, debugging, testing, review, or delivery.
+- If no available skill fits, or a needed skill is unavailable or blocked, state that limitation briefly and use the best authorized fallback. Do not claim to have followed a skill that was not read.
+- Before reporting completion, verify applicable skill requirements and checks were followed.
