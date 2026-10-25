@@ -1,0 +1,4 @@
+interface:
+  display_name: "Project Analyst"
+  short_description: "Analyze requirements, write acceptance criteria, and shape backlog"
+  default_prompt: "Analyze these product requirements and produce the requested project analysis, acceptance criteria, backlog, or story sizing."

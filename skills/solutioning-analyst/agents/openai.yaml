@@ -1,4 +1,4 @@
 interface:
   display_name: "Solutioning Analyst"
-  short_description: "Create Playbook-compliant LLD and IFA specs"
-  default_prompt: "Use $solutioning-analyst to analyze this feature and produce a System Analyst Playbook v1.6-compliant IFA using template v4."
+  short_description: "Create BRD, HLD, ERD, glossary, LLD, and IFA specs"
+  default_prompt: "Use $solutioning-analyst to analyze this feature and produce the requested deliverable. For BRDs, follow the BRD document format; for HLDs, follow the HLD document format; for ERDs, follow the ERD format; for glossaries, follow the glossary format; for API contracts, follow IFA template v4."

@@ -1,33 +1,38 @@
-# fatihmuhamadridho Skills
+# Fatih's Codex Skills
 
-Skills I usually share for projects that use Codex agents and related workflows.
+Reusable skills, agent profiles, and automation configurations for Codex and related AI agent workflows.
 
-## Install
+## Install skills
+
+Install this repository's skills with the Skills CLI:
 
 ```bash
 npx skills add fatihmuhamadridho/skills
 ```
 
-## What it does
+## Repository contents
 
-This repository packages reusable skills for AI agents to help with common project workflows, documentation, analysis, and automation. Most skills are general-purpose, while a few are tailored to Codex-specific workflows and local tooling.
+- `skills/` — reusable workflows and domain guidance. Each skill is defined by a `SKILL.md` file; some include supporting references, scripts, templates, or agent metadata.
+- `agents/` — Codex agent profiles for roles such as business analysis, full-stack development, and QA.
+- `automations/` — recurring or multi-step automation configurations and their supporting files.
+- `AGENTS.md` — repository-level instructions for agents working with this repository.
+- `RTK.md` — local guidance for using RTK in shell workflows.
 
-## Included Skills
+## Selected skills
 
-- `automation-patrol-builder` - helps create and repair patrol-style recurring automations with real per-cycle work, Telegram status updates, single-thread continuity, and clean stop rules.
-- `atomic-design` - helps structure UI systems using atomic design principles.
-- `clean-architecture` - helps organize code into clean architecture layers and boundaries.
-- `codex-session-activity-summary` - Codex-specific; summarizes work activity from local Codex session logs.
-- `commit-push` - helps create clean local commits and prepare push-ready Git messages.
-- `feature-driven-development` - supports feature-driven development with feature-focused code organization.
-- `figma-repo-compliance` - checks Figma-to-repo implementation alignment and design compliance.
-- `frontend-tech-assessment` - turns frontend requirements into estimation and implementation breakdowns.
-- `jira-qa-testcase-xlsx` - generates QA test case spreadsheets from Jira stories.
-- `project-analyst-story-sizing` - builds story sizing sheets with acceptance criteria and flow details.
-- `repo-conventions` - keeps changes aligned with the repo's existing coding conventions.
-- `request-pr-mr` - helps prepare pull request or merge request content from the actual diff.
-- `setup-gh` - helps install and verify GitHub CLI.
-- `setup-glab` - helps install and verify GitLab CLI.
-- `solutioning-analyst` - produces backend solution analysis, API flow, and contract planning.
-- `test-driven-development` - guides test-driven development with behavior-first test design.
-- `teams-remote-profile` - Codex-specific; launches a remote-debuggable Chrome profile for Teams workflows.
+- `project-analyst` — analyzes product requirements, scope, flows, acceptance criteria, risks, and backlog breakdown.
+- `solutioning-analyst` — prepares backend solution analysis, API flows, and contract planning.
+- `feature-driven-development` — organizes implementation around feature-focused slices.
+- `atomic-design` — applies atomic design principles to UI structure.
+- `clean-architecture` — helps define and maintain architecture boundaries.
+- `figma-repo-compliance` — checks implementation against Figma designs and repository expectations.
+- `automation-patrol-builder` — creates and repairs recurring patrol automation workflows.
+- `codex-session-activity-summary` — summarizes activity from local Codex session logs.
+- `commit-push` — prepares commits and push-ready Git delivery.
+- `request-pr-mr` — prepares pull request or merge request content from a diff.
+
+Browse `skills/` for the full set of skills. Skill folders can also contain supporting materials specific to that workflow.
+
+## Contributing
+
+Keep each skill's `SKILL.md` focused on when and how to use it. Put detailed examples and supporting material in that skill's own `references/`, `scripts/`, or `templates/` directories where appropriate. Update this README when repository contents or installation instructions change.
