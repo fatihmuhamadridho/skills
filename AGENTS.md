@@ -25,6 +25,15 @@ These rules apply to Codex and any agent that reads `.codex/AGENTS.md`.
 - Prefer `pnpm` over `npm` for Node.js package management and CLI installs; use `npm` only when no workable `pnpm` path exists.
 - Install Python packages with `python -m pip`, not bare `pip`.
 
+## Memory
+
+- Before non-trivial work, read `memories/memory_summary.md` to identify relevant project context, user preferences, and memory pointers.
+- Identify the active project from the current working directory and task. Search `memories/MEMORY.md` for the matching project or topic; avoid pulling in unrelated project sections.
+- Follow pointers to rollout summaries or source notes only when their details are needed to answer the task or guide implementation.
+- Do not routinely read all of `memories/raw_memories.md` or the full `memories/rollout_summaries` archive.
+- Treat memory as historical context, not proof of current state. Verify changeable facts against the active repository, configuration, or authoritative source before relying on them.
+- Do not add, edit, or delete memory files unless the user explicitly asks for a memory update.
+
 ## Skill Routing
 
 - At the start of every task, check the session skill catalog for a directly relevant skill. Also inspect skill names and descriptions in both the resolved global `<codex-home>/skills` and `<user-home>/.agents/skills` directories, plus project-local `.codex/skills` and `.agents/skills` when present. Use portable path resolution from the Portable Paths rules; do not assume fixed usernames or drive letters.
