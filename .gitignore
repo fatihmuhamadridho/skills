@@ -22,3 +22,5 @@
 /skills/.system/**
 
 !/.vscode
+!/.markdownlint.json
+!/config.md
